@@ -110,6 +110,15 @@ return [
 
     'faker_locale' => 'en_US',
 
+     /*
+    |--------------------------------------------------------------------------
+    | Application decimal places count
+    |--------------------------------------------------------------------------
+    |
+    */
+
+    'decimal_places' => 5,
+
     /*
     |--------------------------------------------------------------------------
     | Encryption Key
@@ -195,6 +204,10 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
+        /*
+         Other providers
+        */
+        Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
     ],
 
     /*
@@ -209,7 +222,8 @@ return [
     */
 
     'aliases' => Facade::defaultAliases()->merge([
-        // 'ExampleClass' => App\Example\ExampleClass::class,
+        'JWTAuth' => Tymon\JWTAuth\Facades\JWTAuth::class, 
+        'JWTFactory' => Tymon\JWTAuth\Facades\JWTFactory::class,
     ])->toArray(),
 
 ];

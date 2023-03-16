@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class DatabaseSeeder extends Seeder
 {
@@ -12,11 +12,33 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // \App\Models\User::factory(10)->create();
+        $signs = $this->importCSV(base_path("database/data/signs.csv"));
+        $data = [];
 
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        foreach ($signs as $sign) {
+            $data[] = ['sign' => $sign ];
+        }
+
+        DB::table('signs')->insert($data);
+    }
+
+    function importCSV($filename, $delimiter = ',') {
+        if(!file_exists($filename) || !is_readable($filename))
+            return false;
+
+        $header = null;
+        $data = [];
+        if (($handle = fopen($filename, 'r')) !== false) {
+            while (($row = fgetcsv($handle, 100, $delimiter)) !== false){
+                if(!$header)
+                    $header = $row;
+                else
+                    $data[] = $row[0];
+            }
+
+            fclose($handle);
+        }
+            
+        return $data;
     }
 }
